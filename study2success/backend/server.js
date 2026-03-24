@@ -45,18 +45,17 @@ app.use((req, res, next) => {
   next();
 });
 
-/* SESSION */
 app.use(
   session({
     store: new SQLiteStore({
       db: "sessions.db",
       dir: isRender ? "/data" : "./"
     }),
-    secret: "study2success-secret",
+    secret: process.env.SESSION_SECRET || "study2success-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: isRender, // true on Render (HTTPS), false locally
       httpOnly: true
     }
   })
